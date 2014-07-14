@@ -53,18 +53,6 @@ class Motor(object):
     def speed(self):
         del self._speed
 
-
-class Camera(object):
-    def __init__(self,x,y,z):
-        self.cx = x
-        self.cy = y
-        self.cz = z
-        self.size = 0.4
-        self.pos = vector(self.cx,self.cy,self.cz)
-        self.size = 0.2
-        self.box = box(pos=self.pos, size=(self.size,self.size,self.size), color=color.brown,axis = (1,0,0))
-
-    
 class Robot(object):
     def __init__(self,x,y,z):
         self.x = x
@@ -72,12 +60,19 @@ class Robot(object):
         self.z = z
         self.pos = vector(self.x,self.y,self.z)
         self.box = create_box(world,80, 0.5,0.3,0.3, (self.x,self.y,self.z),0, color.blue)
+        self.makeCamera()
         self.motors = [Motor(0),Motor(1),Motor(2)]
-        self.camera = Camera(self.x,self.y+0.5,self.z)
         self.Bearingtuple = collections.namedtuple('Bearingtuple', 'x y z')
         self.Worldtuple = collections.namedtuple('Worldtuple', 'x y z')
         self.Markertuple = collections.namedtuple('Markertuple', 'distance code marker_type bearing world')
         self.totalmoment=0
+    
+    #Creates a box to act as camera
+    def makeCamera(self):
+        camera = vpyode.GDMElement()
+        camera.DefineBox(1000,0.15,0.1,0.1,color.red,self.box.GetFeature("box").pos + (0.15,0.05,0))
+        self.box.AddGDMElement("camera",camera)
+        
 
     def angle_diff(self,v1x,v1z,v2x,v2z):
         angle=atan2(v2z,v2x)-atan2(v1z,v1x)
@@ -93,7 +88,7 @@ class Robot(object):
         for m in marker_list:
             
             a = m.axis
-            b = vector(m.pos.x,self.pos.y,m.pos.z)-self.pos
+            b = vector(m.pos.x,m.pos.y,m.pos.z)-(self.box.GetFeature("camera").pos + self.box.GetFeature("box").pos)
             if m.axis.y == 0.0:
                 if diff_angle(a,b) > 1.6 and diff_angle(a,b)<=pi: #something was wrong with your version of my code.  #if (self.angle_diff(a.x,a.z,b.x,b.z)<=1.6) and (self.angle_diff(a.x,a.z,b.x,b.z) >= -1.6):
                     newlist.append(m)
@@ -104,8 +99,8 @@ class Robot(object):
 
         #calculates angle to box
         for n in newlist:
-            a = vector(n.pos.x,n.pos.y,n.pos.z)-self.pos
-            b = self.box.GetFeature('box').pos
+            a = vector(n.pos.x,n.pos.y,n.pos.z)-(self.box.GetFeature("camera").pos + self.box.GetFeature("box").pos)
+            b = self.box.GetFeature('box').axis
             c = -math.degrees(self.angle_diff(a.x,a.z,b.x,b.z))
 
 

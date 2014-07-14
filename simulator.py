@@ -11,21 +11,19 @@ for i in xrange(NUMBER_OF_TOKENS):
 
 def usercode0():
     while True:
-<<<<<<< HEAD
         markers = R.see()
         print len(markers)
         for m in markers:
             print m.distance
-        R.motors[0].speed=0.5
-        R.motors[1].speed=-0.5
-        time.sleep(2)
+            print m.bearing.y
+        R.motors[0].speed=0.6
+        R.motors[1].speed=0.1
+        time.sleep(1)
 
         '''
         markers =R.see()
         print len(markers)
-=======
->>>>>>> 4e5c1ed639bba668519299febb694e8b5a8a6f2a
-        
+
         R.motors[0].speed=0.8
         R.motors[1].speed=0.8
         time.sleep(random.randint(0,3))
@@ -38,8 +36,7 @@ def usercode0():
         R.motors[0].speed=-0.7
         R.motors[1].speed=-0.5
         time.sleep(random.randint(0,3))
-        
-        
+        '''        
 thread.start_new_thread(usercode0,())    
 
 populate_walls(7,7)
