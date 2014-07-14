@@ -11,8 +11,7 @@ for i in xrange(NUMBER_OF_TOKENS):
 
 def usercode0():
     while True:
-        continue
-        '''
+        
         R.motors[0].speed=0.8
         R.motors[1].speed=0.8
         time.sleep(random.randint(0,3))
@@ -25,7 +24,7 @@ def usercode0():
         R.motors[0].speed=-0.7
         R.motors[1].speed=-0.5
         time.sleep(random.randint(0,3))
-        '''
+        
         
 thread.start_new_thread(usercode0,())    
 
