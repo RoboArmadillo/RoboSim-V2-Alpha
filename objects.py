@@ -71,7 +71,7 @@ class Robot(object):
         self.y = y
         self.z = z
         self.pos = vector(self.x,self.y,self.z)
-        self.box = create_box(world,100000, 0.5,0.3,0.3, (self.x,self.y,self.z),0)
+        self.box = create_box(world,1000, 0.5,0.3,0.3, (self.x,self.y,self.z),0)
         self.motors = [Motor(0),Motor(1),Motor(2)]
         self.camera = Camera(self.x,self.y+0.5,self.z)
         self.Bearingtuple = collections.namedtuple('Bearingtuple', 'x y z')
@@ -146,8 +146,8 @@ class Token(object):
         self.z = np.random.uniform((-LENGTH/2)+0.6,LENGTH/2-0.60)
         self.y = 0.07
         self.pos = vector(self.x,0.07,self.z)
-        self.size = 0.2
-        self.box = create_box(world, 0.00001, self.size,self.size,self.size, (self.x,self.y,self.z),np.random.uniform(0,6.28))
+        self.size = 0.1
+        self.box = create_box(world, 1000, self.size,self.size,self.size, (self.x,self.y,self.z),np.random.uniform(0,6.28))
 
     def update(self):
         self.box.UpdateDisplay()
