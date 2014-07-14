@@ -88,7 +88,7 @@ class Robot(object):
         for m in marker_list:
             
             a = m.axis
-            b = vector(m.pos.x,m.pos.y,m.pos.z)-(self.box.GetFeature("camera").pos + self.box.GetFeature("box").pos)
+            b = vector(m.pos.x,m.pos.y,m.pos.z)-self.box.GetFeature("box").pos
             if m.axis.y == 0.0:
                 if diff_angle(a,b) > 1.6 and diff_angle(a,b)<=pi: #something was wrong with your version of my code.  #if (self.angle_diff(a.x,a.z,b.x,b.z)<=1.6) and (self.angle_diff(a.x,a.z,b.x,b.z) >= -1.6):
                     newlist.append(m)
@@ -99,7 +99,7 @@ class Robot(object):
 
         #calculates angle to box
         for n in newlist:
-            a = vector(n.pos.x,n.pos.y,n.pos.z)-(self.box.GetFeature("camera").pos + self.box.GetFeature("box").pos)
+            a = vector(n.pos.x,n.pos.y,n.pos.z)-self.box.GetFeature("box").pos
             b = self.box.GetFeature('box').axis
             c = -math.degrees(self.angle_diff(a.x,a.z,b.x,b.z))
 
