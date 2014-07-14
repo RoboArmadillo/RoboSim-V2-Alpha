@@ -10,12 +10,12 @@ import collections
 from variables import *
 
 
-def create_box(world, density, lx, ly, lz,position,rotation):
+def create_box(world, density, lx, ly, lz,position,rotation, colour):
     """Create a box body and its corresponding geom."""
     # Create body
     body = vpyode.GDMFrameBody(world)
     element = vpyode.GDMElement()
-    element.DefineBox(density, lx, ly, lz)
+    element.DefineBox(density, lx, ly, lz, colour)
     body.AddGDMElement('Box', element)
     body.setPosition(position)
     body.setQuaternion((rotation,0,1,0))
@@ -59,7 +59,7 @@ class Robot(object):
         self.y = y
         self.z = z
         self.pos = vector(self.x,self.y,self.z)
-        self.box = create_box(world,1000, 0.5,0.3,0.3, (self.x,self.y,self.z),0)
+        self.box = create_box(world,80, 0.5,0.3,0.3, (self.x,self.y,self.z),0, color.blue)
         self.motors = [Motor(0),Motor(1),Motor(2)]
         self.Bearingtuple = collections.namedtuple('Bearingtuple', 'x y z')
         self.Worldtuple = collections.namedtuple('Worldtuple', 'x y z')
@@ -82,9 +82,9 @@ class Token(object):
         self.x = np.random.uniform((-WIDTH/2)+0.6,WIDTH/2-0.60)
         self.z = np.random.uniform((-LENGTH/2)+0.6,LENGTH/2-0.60)
         self.y = 0.07
-        self.pos = vector(self.x,0.07,self.z)
+        self.pos = vector(self.x,0.051,self.z)
         self.size = 0.1
-        self.box = create_box(world, 1000, self.size,self.size,self.size, (self.x,self.y,self.z),np.random.uniform(0,6.28))
+        self.box = create_box(world, 100, self.size,self.size,self.size, (self.x,self.y,self.z),np.random.uniform(0,6.28), color.brown)
 
     def update(self):
         self.box.UpdateDisplay()
