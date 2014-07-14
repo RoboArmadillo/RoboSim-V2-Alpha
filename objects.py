@@ -52,6 +52,18 @@ class Motor(object):
     @speed.deleter
     def speed(self):
         del self._speed
+
+
+class Camera(object):
+    def __init__(self,x,y,z):
+        self.cx = x
+        self.cy = y
+        self.cz = z
+        self.size = 0.4
+        self.pos = vector(self.cx,self.cy,self.cz)
+        self.size = 0.2
+        self.box = box(pos=self.pos, size=(self.size,self.size,self.size), color=color.brown,axis = (1,0,0))
+
     
 class Robot(object):
     def __init__(self,x,y,z):
@@ -61,14 +73,61 @@ class Robot(object):
         self.pos = vector(self.x,self.y,self.z)
         self.box = create_box(world,80, 0.5,0.3,0.3, (self.x,self.y,self.z),0, color.blue)
         self.motors = [Motor(0),Motor(1),Motor(2)]
+        self.camera = Camera(self.x,self.y+0.5,self.z)
         self.Bearingtuple = collections.namedtuple('Bearingtuple', 'x y z')
         self.Worldtuple = collections.namedtuple('Worldtuple', 'x y z')
         self.Markertuple = collections.namedtuple('Markertuple', 'distance code marker_type bearing world')
         self.totalmoment=0
+
+    def angle_diff(self,v1x,v1z,v2x,v2z):
+        angle=atan2(v2z,v2x)-atan2(v1z,v1x)
+        return angle
+
+
+    def see(self):
+        print "photo time"
+        newlist = []
+        personal_marker_list = []
+
+        #checks faces are visible
+        for m in marker_list:
+            
+            a = m.axis
+            b = vector(m.pos.x,self.pos.y,m.pos.z)-self.pos
+            if m.axis.y == 0.0:
+                if diff_angle(a,b) > 1.6 and diff_angle(a,b)<=pi: #something was wrong with your version of my code.  #if (self.angle_diff(a.x,a.z,b.x,b.z)<=1.6) and (self.angle_diff(a.x,a.z,b.x,b.z) >= -1.6):
+                    newlist.append(m)
+            
+        #print newlist
+
+
+
+        #calculates angle to box
+        for n in newlist:
+            a = vector(n.pos.x,n.pos.y,n.pos.z)-self.pos
+            b = self.box.GetFeature('box').pos
+            c = -math.degrees(self.angle_diff(a.x,a.z,b.x,b.z))
+
+
+
+
+            distance = round(mag(a),2)
+            marker = self.Markertuple(distance,n.code,n.marker_type,self.Bearingtuple(2,c,2),self.Worldtuple(a.z,n.pos.y-self.box.GetFeature('box').pos.y,a.x))
+            #pri
+            
+
+
+            #field of view stuff - this works
+            if int(marker.bearing.y) <30 and int(marker.bearing.y) >-30:# and marker.distance>0.3+self.box.length/200: #if the robot gets too close it looses sight of the marker
+                personal_marker_list.append(marker)
+
+        return personal_marker_list
+
+
     
     def update(self):
         #Calculates turning effect of each motor and uses them to make a turn
-        averagespeed = float((self.motors[0].speed + self.motors[1].speed))/2
+        averagespeed = float(((self.motors[0].speed) + (self.motors[1].speed))/2)
         moment0 = float(self.motors[0].speed)
         moment1 = float(-self.motors[1].speed)
         self.totalmoment = 3*(moment0 + moment1)
@@ -76,6 +135,10 @@ class Robot(object):
         vel = odelib.rotateVector(self.box.getRotation(),(averagespeed,0,0))
         self.box.setLinearVel((vel[0],vel[1],vel[2]))
         self.box.UpdateDisplay()
+
+
+                
+
 
 class Token(object):
     def __init__(self):
