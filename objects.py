@@ -59,7 +59,7 @@ class Robot(object):
         self.y = y
         self.z = z
         self.pos = vector(self.x,self.y,self.z)
-        self.box = create_box(world,1000, 0.5,0.3,0.3, (self.x,self.y,self.z),0)
+        self.box = create_box(world,100000, 0.5,0.3,0.3, (self.x,self.y,self.z),0)
         self.motors = [Motor(0),Motor(1),Motor(2)]
         self.Bearingtuple = collections.namedtuple('Bearingtuple', 'x y z')
         self.Worldtuple = collections.namedtuple('Worldtuple', 'x y z')
@@ -83,8 +83,78 @@ class Token(object):
         self.z = np.random.uniform((-LENGTH/2)+0.6,LENGTH/2-0.60)
         self.y = 0.07
         self.pos = vector(self.x,0.07,self.z)
-        self.size = 0.1
-        self.box = create_box(world, 1000, self.size,self.size,self.size, (self.x,self.y,self.z),np.random.uniform(0,6.28))
+        self.size = 0.2
+        self.box = create_box(world, 0.00001, self.size,self.size,self.size, (self.x,self.y,self.z),np.random.uniform(0,6.28))
 
     def update(self):
         self.box.UpdateDisplay()
+
+class Marker(object):
+    def __init__(self,code,x,y,z,axis_decider,marker_type):
+        self.x = x
+        self.y = y
+        self.z = z
+        self.pos = vector(self.x,self.y,self.z)
+
+        self.axis = vector(int(axis_decider[0]),int(axis_decider[1]),int(axis_decider[2]))
+
+        self.marker_type = marker_type
+        if self.marker_type == "TOKEN":
+            self.size = 0.09
+        elif self.marker_type == "ARENA":
+            self.size = 0.4
+        self.marker = box(pos=self.pos, size=(0.01,self.size,self.size), color=color.white,material=tex,axis = self.axis)
+
+
+
+        self.angle = 0
+        self.angle_rad = math.radians(self.angle)
+        self.code = code
+
+
+
+
+
+
+
+
+def populate_walls(Tokens_per_wallx,Tokens_per_wallz):
+    spacingx = float(WIDTH)/(Tokens_per_wallx+1)
+    print "spacingx"
+    print spacingx
+    spacingz = float(LENGTH)/(Tokens_per_wallz+1)
+    #xwall1
+    counter = 0
+    xpos = -WIDTH/2
+    ypos = HEIGHT*0.75
+    zpos = LENGTH/2
+
+    while counter <=Tokens_per_wallx:
+        xposnew = xpos + (counter * spacingx)
+        if counter > 0:
+            box = Marker(Tokens_per_wallx,xposnew,ypos,zpos-0.01,(0,0,-1),"ARENA")
+            marker_list.append(box)
+        counter +=1
+    
+    while counter <=Tokens_per_wallx+Tokens_per_wallz:
+        zposnew = zpos - ((counter-Tokens_per_wallx) * spacingz)
+        if counter > Tokens_per_wallx:
+            box = Marker(Tokens_per_wallx+Tokens_per_wallz,xpos+0.01,ypos,zposnew,(1,0,0),"ARENA")
+            marker_list.append(box)
+        counter +=1
+    
+    while counter <=((Tokens_per_wallx*2)+Tokens_per_wallz):
+        xposnew = xpos + ((counter-Tokens_per_wallx-Tokens_per_wallz) * spacingz)
+        if counter > Tokens_per_wallx+Tokens_per_wallz:
+            box = Marker(((Tokens_per_wallx*2)+Tokens_per_wallz),xposnew,ypos,zpos-LENGTH+0.01,(0,0,1),"ARENA")
+            marker_list.append(box)
+        counter +=1
+    
+    while counter <=(Tokens_per_wallx+Tokens_per_wallz)*2:
+        zposnew = zpos - ((counter-Tokens_per_wallx-Tokens_per_wallz-Tokens_per_wallx) * spacingz)
+        if counter > Tokens_per_wallx+Tokens_per_wallz+Tokens_per_wallx:
+            box = Marker((Tokens_per_wallx+Tokens_per_wallz)*2,xpos+WIDTH-0.01,ypos,zposnew,(-1,0,0),"ARENA")
+            marker_list.append(box)
+        counter +=1
+    
+    
