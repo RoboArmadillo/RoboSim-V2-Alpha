@@ -11,8 +11,18 @@ for i in xrange(NUMBER_OF_TOKENS):
 
 def usercode0():
     while True:
-        continue
+        markers = R.see()
+        print len(markers)
+        for m in markers:
+            print m.distance
+        R.motors[0].speed=0.5
+        R.motors[1].speed=-0.5
+        time.sleep(2)
+
         '''
+        markers =R.see()
+        print len(markers)
+        
         R.motors[0].speed=0.8
         R.motors[1].speed=0.8
         time.sleep(random.randint(0,3))
