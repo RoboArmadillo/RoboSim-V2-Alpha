@@ -122,9 +122,9 @@ class Robot(object):
     
     def update(self):
         #Calculates turning effect of each motor and uses them to make a turn
-        averagespeed = float(((self.motors[0].speed) + (self.motors[1].speed))/2)
-        moment0 = float(self.motors[0].speed)
-        moment1 = float(-self.motors[1].speed)
+        averagespeed = float(((self.motors[0].speed) + (self.motors[1].speed))/2)/100
+        moment0 = float(self.motors[0].speed)/100
+        moment1 = float(-self.motors[1].speed)/100
         self.totalmoment = 3*(moment0 + moment1)
         self.box.setAngularVel((0,self.totalmoment,0))
         vel = odelib.rotateVector(self.box.getRotation(),(averagespeed,0,0))

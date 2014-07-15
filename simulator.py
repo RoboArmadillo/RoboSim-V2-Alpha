@@ -15,9 +15,8 @@ def usercode0():
         print len(markers)
         for m in markers:
             print m.distance
-            print m.bearing.y
-        R.motors[0].speed=0.6
-        R.motors[1].speed=0.1
+        R.motors[0].speed=100
+        R.motors[1].speed=50
         time.sleep(1)
      
 thread.start_new_thread(usercode0,())    
