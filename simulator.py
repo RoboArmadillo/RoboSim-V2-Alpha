@@ -15,25 +15,11 @@ def usercode0():
         print len(markers)
         for m in markers:
             print m.distance
-        R.motors[0].speed=0.5
-        R.motors[1].speed=-0.5
-        time.sleep(2)
-
-
-        R.motors[0].speed=0.8
-        R.motors[1].speed=0.8
-        time.sleep(random.randint(0,3))
-        R.motors[0].speed=0.5
-        R.motors[1].speed=-0.5
-        time.sleep(random.randint(0,3))
-        R.motors[0].speed=-0.3
-        R.motors[1].speed=0.6
-        time.sleep(random.randint(0,3))
-        R.motors[0].speed=-0.7
-        R.motors[1].speed=-0.5
-        time.sleep(random.randint(0,3))
-        
-        
+            print m.bearing.y
+        R.motors[0].speed=0.6
+        R.motors[1].speed=0.1
+        time.sleep(1)
+     
 thread.start_new_thread(usercode0,())    
 
 populate_walls(7,7)

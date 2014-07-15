@@ -188,12 +188,12 @@ class GDMElement(DisplayElement):
         """Get the mass of this element."""
         return self._mass
     
-    def DefineBox(self, Density, SizeX, SizeY, SizeZ):
+    def DefineBox(self, Density, SizeX, SizeY, SizeZ, colour, position = (0,0,0)):
         """Define this element as a ode Box."""
         if self._hasGeom:
             self._geom = ode.GeomBox(_bigSpace, (SizeX, SizeY, SizeZ)) # BigSpace was None, problem with local body spaces
 
-        DisplayElement.SetDisplayObject(self, visual.box(length=SizeX, height=SizeY, width=SizeZ))
+        DisplayElement.SetDisplayObject(self, visual.box(length=SizeX, height=SizeY, width=SizeZ, color = colour, pos=position))
 
         self._mass = ode.Mass()
         self._mass.setBox(Density, SizeX, SizeY, SizeZ)
