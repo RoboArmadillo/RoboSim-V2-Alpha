@@ -2,7 +2,7 @@ from visual import *
 import ode,odelib,vpyode
 RATE = 50
 dt = 1.0/RATE
-marker_list = []
+arena_marker_list = []
 token_list = []
 robot_list = []
 
@@ -10,7 +10,7 @@ robot_list = []
 LENGTH = 4
 WIDTH = 4
 HEIGHT = 0.3
-NUMBER_OF_TOKENS = 40
+NUMBER_OF_TOKENS = 10
 
 
 
