@@ -67,11 +67,12 @@ class Robot(object):
         self.Markertuple = collections.namedtuple('Markertuple', 'distance code marker_type bearing world')
         self.totalmoment=0
     
+
     #Creates a box to act as camera
     def makeCamera(self):
-        camera = vpyode.GDMElement()
-        camera.DefineBox(1000,0.15,0.1,0.1,color.red,self.box.GetFeature("box").pos + (0.15,0.05,0))
-        self.box.AddGDMElement("camera",camera)
+        self.camera = vpyode.GDMElement()
+        self.camera.DefineBox(1000,0.15,0.1,0.1,color.red,self.box.GetFeature("box").pos + (0.15,0.05,0))
+        self.box.AddGDMElement("camera",self.camera)
         
 
     def angle_diff(self,v1x,v1z,v2x,v2z):
@@ -128,6 +129,8 @@ class Robot(object):
         self.totalmoment = 3*(moment0 + moment1)
         self.box.setAngularVel((0,self.totalmoment,0))
         vel = odelib.rotateVector(self.box.getRotation(),(averagespeed,0,0))
+        #print self.camera.GetFeature("camera").pos
+
         self.box.setLinearVel((vel[0],vel[1],vel[2]))
         self.box.UpdateDisplay()
 
@@ -143,7 +146,7 @@ class Token(object):
         self.pos = vector(self.x,0.051,self.z)
         self.size = 0.1
         self.box = create_box(world, 100, self.size,self.size,self.size, (self.x,self.y,self.z),np.random.uniform(0,6.28), color.brown)
-
+        
     def update(self):
         self.box.UpdateDisplay()
 
