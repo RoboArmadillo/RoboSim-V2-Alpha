@@ -147,23 +147,6 @@ R=Robot(0,0.15,0)
 thread.start_new_thread(usercode0,())
 
 
-"""
-a=Arena()
-populate_walls(7,7)
-for i in xrange(40,NUMBER_OF_TOKENS+40):
-        generate = True
-        x = np.random.uniform(-((LENGTH/2)-0.06),((LENGTH/2)-0.06))
-        z = np.random.uniform(-((WIDTH/2)-0.06),((WIDTH/2)-0.06))
-        space[x] = z
-        for k in space.keys():
-            if math.hypot(k-x,space[k]-z)<0.142:
-                generate = False
-
-        if generate == True:
-            token_list.append(Token(i,x,z))
-R=Robot(0,0.15,0)
-thread.start_new_thread(usercode0,())
-"""
             
 
 while True:
