@@ -8,6 +8,8 @@ Usercode Function
 #################
 '''    
 
+space ={}
+
 def SR_filter(listname,markertype):
     temporary_list=[]
     for l in listname:
@@ -30,7 +32,7 @@ def swarmcode(number):
 
 
 def usercode0():
-    time.sleep(10) #This delay is to let the tokens settle down - need to fix the spawning
+    #time.sleep(10) #This delay is to let the tokens settle down - need to fix the spawning
     while True:
         markers = R.see()
         markers = SR_filter(markers, 'TOKEN')
@@ -128,12 +130,44 @@ def usercode3():
 
 a=Arena()
 populate_walls(7,7)
+token_list.append(Token(0,1,1))
+space[1] = 1
+
 for i in xrange(40,NUMBER_OF_TOKENS+40):
-    token_list.append(Token(i))
+        generate = True
+        x = np.random.uniform(-((LENGTH/2)-0.06),((LENGTH/2)-0.06))
+        z = np.random.uniform(-((WIDTH/2)-0.06),((WIDTH/2)-0.06))
+        space[x] = z
+        for k in space.keys():
+            if math.hypot(k-x,space[k]-z)<0.142:
+                generate = False
+        #if generate == True:
+        token_list.append(Token(i+1,x,z))
 R=Robot(0,0.15,0)
 thread.start_new_thread(usercode0,())
 
+
+"""
+a=Arena()
+populate_walls(7,7)
+for i in xrange(40,NUMBER_OF_TOKENS+40):
+        generate = True
+        x = np.random.uniform(-((LENGTH/2)-0.06),((LENGTH/2)-0.06))
+        z = np.random.uniform(-((WIDTH/2)-0.06),((WIDTH/2)-0.06))
+        space[x] = z
+        for k in space.keys():
+            if math.hypot(k-x,space[k]-z)<0.142:
+                generate = False
+
+        if generate == True:
+            token_list.append(Token(i,x,z))
+R=Robot(0,0.15,0)
+thread.start_new_thread(usercode0,())
+"""
+            
+
 while True:
+    print "working"
     n = 2
     for i in range(n):
         # Simulation step

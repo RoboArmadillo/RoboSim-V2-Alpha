@@ -140,9 +140,9 @@ class Robot(object):
 Token class describes a "Token" (cardboard box) with markers attached on all faces
 '''
 class Token(object):
-    def __init__(self,code):
-        self.x = np.random.uniform(-((LENGTH/2)-0.06),((LENGTH/2)-0.06))
-        self.z = np.random.uniform(-((WIDTH/2)-0.06),((WIDTH/2)-0.06))
+    def __init__(self,code,x,z):
+        self.x = x#np.random.uniform(-((LENGTH/2)-0.06),((LENGTH/2)-0.06))
+        self.z = z#np.random.uniform(-((WIDTH/2)-0.06),((WIDTH/2)-0.06))
         self.y = 0.052
         self.pos = vector(self.x,self.y,self.z)
         self.size = 0.1
