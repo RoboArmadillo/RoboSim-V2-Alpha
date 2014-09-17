@@ -36,6 +36,7 @@ def usercode0():
     while True:
         markers = R.see()
         markers = SR_filter(markers, 'TOKEN')
+        markers = distance_orderer(markers)
 
             
         if len(markers)>0:
@@ -150,7 +151,6 @@ thread.start_new_thread(usercode0,())
             
 
 while True:
-    print "working"
     n = 2
     for i in range(n):
         # Simulation step

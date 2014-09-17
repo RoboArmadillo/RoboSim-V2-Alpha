@@ -12,6 +12,8 @@ import time
 import math
 
 
+
+
 def create_box(world, density, lx, ly, lz,position,rotation, colour):
     """Create a box body and its corresponding geom."""
     # Create body
@@ -57,6 +59,7 @@ class Motor(object):
 
 class Robot(object):
     def __init__(self,x,y,z):
+        code =1
         self.x = x
         self.y = y
         self.z = z
@@ -68,7 +71,16 @@ class Robot(object):
         self.Worldtuple = collections.namedtuple('Worldtuple', 'x y z')
         self.Markertuple = collections.namedtuple('Markertuple', 'distance code marker_type bearing world')
         self.totalmoment=0
-    
+        self.claws =[create_box(world, 80, 0.4,0.05,0.05, (self.pos.x+0.45,self.pos.y,self.pos.z+0.165),0, color.white)]
+        
+        self.j1 = ode.HingeJoint(world)
+        self.j1.attach(self.claws[0], self.box)
+        self.j1.setAnchor( (self.pos.x+0.44,self.pos.y,self.pos.z+0.163) )
+        self.j1.setAxis( (0,0,1) )
+        #self.box.AddDisplayObject("0",self.claws[0].thing)
+        #self.box.AddDisplayObject("1",self.claws[1].thing)
+
+
     #Creates a box to act as camera
     def makeCamera(self):
         camera = vpyode.GDMElement()
@@ -118,8 +130,9 @@ class Robot(object):
                     if rot_y < 0.53 and rot_y > -0.53:
                         if rot_z < 0.53 and rot_z > -0.53:
                             distance = mag(robot_to_marker)
-                            marker = self.Markertuple(distance,face.code,face.marker_type,self.Bearingtuple(0,np.degrees(rot_y),np.degrees(rot_z)),self.Worldtuple(robot_to_marker.x,robot_to_marker.y,robot_to_marker.z))
-                            personal_marker_list.append(marker)
+                            if distance>0.7:
+                                marker = self.Markertuple(distance,face.code,face.marker_type,self.Bearingtuple(0,np.degrees(rot_y),np.degrees(rot_z)),self.Worldtuple(robot_to_marker.x,robot_to_marker.y,robot_to_marker.z))
+                                personal_marker_list.append(marker)
         return personal_marker_list
 
     def update(self):
@@ -178,6 +191,21 @@ class Marker(object):
         self.angle = 0
         self.angle_rad = math.radians(self.angle)
         self.code = code
+
+class claw(object):
+    def __init__(self,x,y,z,axis_decider):
+        self.x = x
+        self.y = y
+        self.z = z
+        self.pos = vector(self.x,self.y,self.z)
+        self.axis = vector(int(axis_decider[0]),int(axis_decider[1]),int(axis_decider[2]))
+        #self.boxy = box(pos=self.pos, size=(0.4,0.05,0.05), color=color.white,material=tex,axis = self.axis)
+        self.thing = create_box(world, 80, 0.4,0.05,0.05, self.pos,0, color.white)
+
+
+
+
+
 
 
 def populate_walls(Tokens_per_wallx,Tokens_per_wallz):
