@@ -38,7 +38,7 @@ def usercode0():
         markers = SR_filter(markers, 'TOKEN')
         markers = distance_orderer(markers)
 
-            
+        #test thing
         if len(markers)>0:
             angle = markers[0].bearing.y
             print markers[0].marker_type
