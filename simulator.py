@@ -39,6 +39,7 @@ def usercode0():
         markers = distance_orderer(markers)
 
         #test thing
+        #more tests
         if len(markers)>0:
             angle = markers[0].bearing.y
             print markers[0].marker_type
