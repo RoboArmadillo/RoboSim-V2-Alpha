@@ -133,7 +133,8 @@ def usercode3():
 a=Arena()
 populate_walls(7,7)
 token_list.append(Token(0,1,1))
-space[1] = 1
+
+space[0] = 1
 
 for i in xrange(40,NUMBER_OF_TOKENS+40):
         generate = True
@@ -143,8 +144,8 @@ for i in xrange(40,NUMBER_OF_TOKENS+40):
         for k in space.keys():
             if math.hypot(k-x,space[k]-z)<0.142:
                 generate = False
-        #if generate == True:
-        token_list.append(Token(i+1,x,z))
+        if generate == True:
+            token_list.append(Token(i+1,x,z))
 R=Robot(0,0.15,0)
 thread.start_new_thread(usercode0,())
 

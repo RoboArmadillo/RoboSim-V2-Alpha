@@ -13,7 +13,6 @@ import math
 
 
 
-
 def create_box(world, density, lx, ly, lz,position,rotation, colour):
     """Create a box body and its corresponding geom."""
     # Create body
@@ -72,13 +71,12 @@ class Robot(object):
         self.Markertuple = collections.namedtuple('Markertuple', 'distance code marker_type bearing world')
         self.totalmoment=0
         self.claws =[create_box(world, 80, 0.4,0.05,0.05, (self.pos.x+0.45,self.pos.y,self.pos.z+0.165),0, color.white)]
+        self.j1 = ode.FixedJoint(world)
+        self.j1.attach(self.box,self.claws[0] )
+        self.j1.setFixed()
+        #self.j1.setAnchor( (0,2,0) )
+        #self.j1.setAxis( (0,1,0) )
         
-        self.j1 = ode.HingeJoint(world)
-        self.j1.attach(self.claws[0], self.box)
-        self.j1.setAnchor( (self.pos.x+0.44,self.pos.y,self.pos.z+0.163) )
-        self.j1.setAxis( (0,0,1) )
-        #self.box.AddDisplayObject("0",self.claws[0].thing)
-        #self.box.AddDisplayObject("1",self.claws[1].thing)
 
 
     #Creates a box to act as camera
@@ -191,17 +189,6 @@ class Marker(object):
         self.angle = 0
         self.angle_rad = math.radians(self.angle)
         self.code = code
-
-class claw(object):
-    def __init__(self,x,y,z,axis_decider):
-        self.x = x
-        self.y = y
-        self.z = z
-        self.pos = vector(self.x,self.y,self.z)
-        self.axis = vector(int(axis_decider[0]),int(axis_decider[1]),int(axis_decider[2]))
-        #self.boxy = box(pos=self.pos, size=(0.4,0.05,0.05), color=color.white,material=tex,axis = self.axis)
-        self.thing = create_box(world, 80, 0.4,0.05,0.05, self.pos,0, color.white)
-
 
 
 
